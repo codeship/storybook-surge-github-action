@@ -21,24 +21,41 @@ if ! deployment=$(curl -s \
   exit 1
 fi
 
-if ! yarn install; then
-  echo "yarn install failed" 1>&2
-  exit 2
+if [ -e yarn.lock ]; then
+  if ! yarn install; then
+    echo "yarn install failed" 1>&2
+    exit 2
+  fi
+
+  if ! yarn add surge@0.20.1; then
+    echo "yarn install of surge.sh failed" 1>&2
+    exit 3
+  fi
+else
+  if ! npm install; then
+    echo "npm install failed" 1>&2
+    exit 2
+  fi
+
+  if ! npm install surge@0.20.1; then
+    echo "npm install of surge.sh failed" 1>&2
+    exit 3
+  fi
 fi
 
 if ! deployment_id=$(echo "${deployment}" | jq '.id'); then
   echo "Could not extract deployment ID from API response" 1>&2
-  exit 3
-fi
-
-if ! yarn build-storybook; then
-  echo "Building of storybook failed" 1>&2
   exit 4
 fi
 
-if ! yarn deploy-storybook "${storybook}.surge.sh"; then
-  echo "Deployment of storybook failed" 1>&2
+if ! ./node_modules/.bin/build-storybook; then
+  echo "Building of storybook failed" 1>&2
   exit 5
+fi
+
+if ! ./node_modules/.bin/surge ./storybook-static/ "${storybook}.surge.sh"; then
+  echo "Deployment of storybook failed" 1>&2
+  exit 6
 fi
 
 if ! curl -s \
