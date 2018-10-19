@@ -5,6 +5,9 @@ LABEL "com.github.actions.description"="Deploy your built storybook to branch sp
 LABEL "com.github.actions.icon"="upload-cloud"
 LABEL "com.github.actions.color"="#5CC18D"
 
+LABEL "repository"="http://github.com/codeship/storybook-surge-github-action"
+LABEL "homepage"="http://github.com/codeship/storybook-surge-github-action"
+
 RUN apt-get update && apt-get install jq
 
 COPY ./entrypoint.sh /entrypoint.sh
