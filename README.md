@@ -23,3 +23,21 @@ When you push to your repository this action will:
 The urls follow the pattern:
 
     https://{repo_owner}-{repo_name}-storybook-{branch_name}.surge.sh
+
+### Examlople workflow
+
+```
+workflow "Storybook" {
+  on = "push"
+  resolves = ["Publish Storybook to Surge.sh"]
+}
+
+action "Publish Storybook to Surge.sh" {
+  uses = "codeship/storybook-surge-github-action@0.0.1"
+  secrets = [
+    "SURGE_LOGIN",
+    "SURGE_TOKEN",
+    "GITHUB_TOKEN",
+  ]
+}
+```
