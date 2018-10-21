@@ -24,7 +24,7 @@ The urls follow the pattern:
 
     https://{repo_owner}-{repo_name}-storybook-{branch_name}.surge.sh
 
-### Examlople workflow
+### Example workflow
 
 ```
 workflow "Storybook" {
